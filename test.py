@@ -1,7 +1,7 @@
 import unittest
 import json
 import os
-import api
+import app
 
 
 BASE_URL = 'http://127.0.0.1:5000/api/'
@@ -11,8 +11,8 @@ DELETE_URL ='http://127.0.0.1:5000/api/1'
 class MyApiTestCase(unittest.TestCase):
 
     def setup(self):
-        self.api = api.app.test_client()
-        self.api.testing = True
+        self.app = app.app.test_client()
+        self.app.testing = True
         todo =        {
         'title': u'Finish Api',
         'description': u'Finish this api and submit',
@@ -25,19 +25,19 @@ class MyApiTestCase(unittest.TestCase):
         'description': u'Finish this api and submit',
         'done': False
         }
-        response = self.api.post(BASE_URL,
+        response = self.app.post(BASE_URL,
                                  data=json.dumps(todo),
                                  content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
     def test_todo_get_all(self):
-        response = self.api.get(BASE_URL)
+        response = self.app.get(BASE_URL)
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data['todos']), 2)
 
     def test_todo_get_one(self):
-        response = self.api.get(GET_URL)
+        response = self.app.get(GET_URL)
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['todos'][0]['title'], 'Finish Api')
@@ -48,7 +48,7 @@ class MyApiTestCase(unittest.TestCase):
         'description': u'Finish this api and submit',
         'done': False
         }
-        response = self.api.put(UPDATE_URL,
+        response = self.app.put(UPDATE_URL,
                                 data=json.dumps(todo),
                                 content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -56,7 +56,7 @@ class MyApiTestCase(unittest.TestCase):
         self.assertEqual(data['todo']['title'],'Finish Learning')
 
     def test_todo_delete(self):
-        response = self.api.delete(DELETE_URL)
+        response = self.app.delete(DELETE_URL)
         self.assertEqual(response.status_code, 204)
 
 if __name__ == "__main__":
