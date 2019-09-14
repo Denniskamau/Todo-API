@@ -11,13 +11,9 @@ DELETE_URL ='http://127.0.0.1:5000/api/1'
 class MyApiTestCase(unittest.TestCase):
 
     def setup(self):
-        self.app = app.app.test_client()
+        self.app = app.test_client()
         self.app.testing = True
-        todo =        {
-        'title': u'Finish Api',
-        'description': u'Finish this api and submit',
-        'done': False
-        }
+
 
     def test_todo_creation(self):
         todo = {

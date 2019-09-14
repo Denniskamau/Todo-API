@@ -3,8 +3,10 @@ from flask import request,jsonify,abort
 
 app = FlaskAPI(__name__)
 
-
-#POST endpoint
+"""
+URL =http://127.0.0.1:5000/api/
+For a database I am using a list with dict objects to represent each todo
+"""
 todos =[
        {
         'id': 1,
@@ -19,7 +21,7 @@ todos =[
         'done': False
     }
 ]
-number = 0
+#POST endpoint
 @app.route('/api/', methods= ['POST'])
 def create_todo():
     try:
@@ -36,6 +38,8 @@ def create_todo():
     except Exception as e:
         response = {"status":"403","message":e}
         return response
+
+# GET all  todos endpoint
 @app.route('/api/',methods=['GET'])
 def get_all_todos():
     try:
@@ -46,6 +50,7 @@ def get_all_todos():
         response = {"status":"403","message":e}
         return response
 
+#Get one todo
 @app.route('/api/<int:todo_id>',methods=['GET'])
 def get_one_todo(todo_id):
     try:
@@ -58,6 +63,8 @@ def get_one_todo(todo_id):
         response = {"status":"403","message":e}
         return response
 
+
+#Delete a todo
 @app.route('/api/<int:todo_id>', methods=['DELETE'])
 def delete_todos(todo_id):
     try:
@@ -71,6 +78,8 @@ def delete_todos(todo_id):
         response = {"status":"403","message":e}
         return response
 
+
+#Update a todo
 @app.route('/api/<int:todo_id>', methods=['PUT'])
 def update_todo(todo_id):
     try:
