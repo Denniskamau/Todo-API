@@ -20,7 +20,7 @@ To access the various endpoints use:
 
 ## Endpoints
 
-POST `http://127.0.0.1:5000/` 
+POST `http://127.0.0.1:5000/api` 
 
 Data ```       {
         'title': 'Finish Api',
@@ -29,10 +29,10 @@ Data ```       {
     },
     ```
 
-GET   `http://127.0.0.1:5000/`
+GET   `http://127.0.0.1:5000/api`
 
-GET(One) `http://127.0.0.1:5000/<id>`
+GET(One) `http://127.0.0.1:5000/api/<id>`
 
-PUT `http://127.0.0.1:5000/<id>`
+PUT `http://127.0.0.1:5000/api/<id>`
 
-DELETE `http://127.0.0.1:5000/<id>`
+DELETE `http://127.0.0.1:5000/api/<id>`
