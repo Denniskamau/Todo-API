@@ -66,7 +66,7 @@ def delete_todos(todo_id):
             if len(todo) == 0:
                 return jsonify({'message':'No record with that id'}), 400
             todos.remove(todo[0])
-            return jsonify({'message':"succesful"})
+            return jsonify({'message':"succesful"}),204
     except Exception as e:
         response = {"status":"403","message":e}
         return response
@@ -79,7 +79,7 @@ def update_todo(todo_id):
             todo[0]['title'] = request.json.get('title', todo[0]['title'])
             todo[0]['description'] = request.json.get('description', todo[0]['description'])
             todo[0]['done'] = request.json.get('done', todo[0]['done'])
-            return jsonify({'task': todo[0]})
+            return jsonify({'task': todo[0]}),200
     except Exception as e:
         response = {"status":"403","message":e}
         return response
