@@ -1,21 +1,38 @@
 from flask_api import FlaskAPI
-from flask import request
+from flask import request,jsonify,abort
 
 app = FlaskAPI(__name__)
 
 
 #POST endpoint
-todos =[]
+todos =[
+       {
+        'id': 1,
+        'title': u'Finish Api',
+        'description': u'Finish this api and submit',
+        'done': False
+    },
+    {
+        'id': 2,
+        'title': u'Learn Python',
+        'description': u'Need to find a good Python tutorial on the web',
+        'done': False
+    }
+]
 number = 0
 @app.route('/api/', methods= ['POST'])
 def create_todo():
     try:
-        if request.method == 'POST':
-            data={"id":number, "title":request.data.title,"done":request.data.done,"todo":request.data.todos}
-            todos.append(data)
-            number +=1
-            response = {"status":201,"message":"data saved", "data":request.data}
-            return response
+        if not request.json or not 'title' in request.json or not 'done' in request.json:
+            return jsonify({'message':'malformed json object'}), 400
+        todo = {
+            'id': todos[-1]['id'] + 1,
+            'title': request.json['title'],
+            'description': request.json.get('description', ""),
+            'done': False
+        }
+        todos.append(todo)
+        return jsonify({'todo':todo}), 201
     except Exception as e:
         response = {"status":"403","message":e}
         return response
@@ -24,48 +41,45 @@ def get_all_todos():
     try:
         if request.method == 'GET':
             response = {"status":200,"data":todos}
-            return response
+            return jsonify({"todos":response})
     except Exception as e:
         response = {"status":"403","message":e}
         return response
 
-@app.route('/api/<int:key>',methods=['GET'])
-def get_one_todo(key):
+@app.route('/api/<int:todo_id>',methods=['GET'])
+def get_one_todo(todo_id):
     try:
         if request.method == 'GET':
-            for todo in todos:
-                if todo.id == key:
-                    response = {"status":200,"message":"succesful", "data":todo}
-                    return response
+            todo = [todo for todo in todos if todo['id'] == todo_id]
+            if len(todo) == 0:
+                return jsonify({'message':'No record with that id'}), 400
+            return jsonify({'task': todo[0]})
     except Exception as e:
         response = {"status":"403","message":e}
         return response
 
-@app.route('/api/<int:key>', methods=['DELETE'])
-def delete_todos(key):
+@app.route('/api/<int:todo_id>', methods=['DELETE'])
+def delete_todos(todo_id):
     try:
         if request.method == 'DELETE':
-            for todo in todos:
-                if todo.id == key:
-                    todos.pop(todo)
-                    response = {"status":200, "message":"delete succesful"}
-
-            return response
+            todo = [todo for todo in todos if todo['id'] == todo_id]
+            if len(todo) == 0:
+                return jsonify({'message':'No record with that id'}), 400
+            todos.remove(todo[0])
+            return jsonify({'message':"succesful"})
     except Exception as e:
         response = {"status":"403","message":e}
         return response
 
-@app.route('/api/<int:key>', methods=['PUT'])
-def update_todo(key):
+@app.route('/api/<int:todo_id>', methods=['PUT'])
+def update_todo(todo_id):
     try:
         if request.method == 'PUT':
-            for todo in todos:
-                if todo.id == key:
-                    todos.title = request.data.title
-                    todos.done = request.data.done
-                    todos.todo = request.data.todo
-                response = {"status":200,"message":"update succesful"}
-            return response
+            todo = [todo for todo in todos if todo['id'] == todo_id]
+            todo[0]['title'] = request.json.get('title', todo[0]['title'])
+            todo[0]['description'] = request.json.get('description', todo[0]['description'])
+            todo[0]['done'] = request.json.get('done', todo[0]['done'])
+            return jsonify({'task': todo[0]})
     except Exception as e:
         response = {"status":"403","message":e}
         return response
