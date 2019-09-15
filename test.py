@@ -37,22 +37,22 @@ class MyApiTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['todos'][0]['title'], 'Finish Api')
 
-    def test_todo_update(self):
-        todo = {
-        'title': u'Finish Learning',
-        'description': u'Finish this api and submit',
-        'done': False
-        }
-        response = self.app.put(UPDATE_URL,
-                                data=json.dumps(todo),
-                                content_type='application/json')
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.get_data())
-        self.assertEqual(data['todo']['title'],'Finish Learning')
-        
-    def test_todo_delete(self):
-        response = self.app.delete(DELETE_URL)
-        self.assertEqual(response.status_code, 204)
+    # def test_todo_update(self):
+    #     todo = {
+    #     'title': u'Finish Learning',
+    #     'description': u'Finish this api and submit',
+    #     'done': False
+    #     }
+    #     response = self.app.put(UPDATE_URL,
+    #                             data=json.dumps(todo),
+    #                             content_type='application/json')
+    #     self.assertEqual(response.status_code, 200)
+    #     data = json.loads(response.get_data())
+    #     self.assertEqual(data['todo']['title'],'Finish Learning')
+
+    # def test_todo_delete(self):
+    #     response = self.app.delete(DELETE_URL)
+    #     self.assertEqual(response.status_code, 204)
 
 if __name__ == "__main__":
     unittest.main()
