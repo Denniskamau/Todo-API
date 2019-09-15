@@ -10,12 +10,9 @@ UPDATE_URL ='http://127.0.0.1:5000/api/1'
 DELETE_URL ='http://127.0.0.1:5000/api/1'
 class MyApiTestCase(unittest.TestCase):
 
-    def setup(self):
-        # self.app = app.test_client()
-        # self.app.testing = True
-        app = Flask(__name__)
-        app.config['TESTING'] = True
-        return app
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
 
     def test_todo_creation(self):
         todo = {
@@ -52,7 +49,7 @@ class MyApiTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.get_data())
         self.assertEqual(data['todo']['title'],'Finish Learning')
-
+        
     def test_todo_delete(self):
         response = self.app.delete(DELETE_URL)
         self.assertEqual(response.status_code, 204)
