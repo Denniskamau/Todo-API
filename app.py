@@ -58,7 +58,7 @@ def get_one_todo(todo_id):
             todo = [todo for todo in todos if todo['id'] == todo_id]
             if len(todo) == 0:
                 return jsonify({'message':'No record with that id'}), 400
-            return jsonify({'task': todo[0]})
+            return jsonify({'todo': todo[0]})
     except Exception as e:
         response = {"status":"403","message":e}
         return response
@@ -88,7 +88,7 @@ def update_todo(todo_id):
             todo[0]['title'] = request.json.get('title', todo[0]['title'])
             todo[0]['description'] = request.json.get('description', todo[0]['description'])
             todo[0]['done'] = request.json.get('done', todo[0]['done'])
-            return jsonify({'task': todo[0]}),200
+            return jsonify({'todo': todo[0]}),200
     except Exception as e:
         response = {"status":"403","message":e}
         return response

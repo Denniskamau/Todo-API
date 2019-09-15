@@ -35,7 +35,7 @@ class MyApiTestCase(unittest.TestCase):
         response = self.app.get(GET_URL)
         data = json.loads(response.get_data())
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(data['todos'][0]['title'], 'Finish Api')
+        self.assertEqual(data['todo']['title'], 'Finish Api')
 
     # def test_todo_update(self):
     #     todo = {
