@@ -1,8 +1,8 @@
 import unittest
 import json
 import os
-import app
-
+from app import  app
+from flask import Flask
 
 BASE_URL = 'http://127.0.0.1:5000/api/'
 GET_URL ='http://127.0.0.1:5000/api/1'
@@ -11,9 +11,11 @@ DELETE_URL ='http://127.0.0.1:5000/api/1'
 class MyApiTestCase(unittest.TestCase):
 
     def setup(self):
-        self.app = app.test_client()
-        self.app.testing = True
-
+        # self.app = app.test_client()
+        # self.app.testing = True
+        app = Flask(__name__)
+        app.config['TESTING'] = True
+        return app
 
     def test_todo_creation(self):
         todo = {
